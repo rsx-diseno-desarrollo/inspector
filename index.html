@@ -2,164 +2,110 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
   <title>Registro de Inspecciones | Tratamientos Térmicos</title>
-
-  <!-- Estilos generales -->
-  <link rel="stylesheet" href="css/styles.css">
-
-  <!-- Librerías para exportación (se usarán después) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
 
   <!-- =========================
-       ENCABEZADO PRINCIPAL
+       BOTÓN INICIAL
   ========================== -->
-  <header>
+  <section id="start-section">
     <h1>Registro de Inspección</h1>
     <h2>Área: Tratamientos Térmicos</h2>
-  </header>
 
-  <!-- =========================
-       INFORMACIÓN DEL REPORTE
-  ========================== -->
-  <section id="report-info">
-    <h3>Datos del Reporte</h3>
-
-    <label>
-      Nombre del inspector:
-      <input type="text" id="inspectorName" placeholder="Nombre completo">
-    </label>
-  <br>
-    <label>
-      Hora del reporte:
-      <input type="time" id="reportHour">
-    </label>
-    <br><br>
     <button id="startReport">
       Iniciar reporte
     </button>
   </section>
-  <br>
+
   <!-- =========================
-       FORMULARIO DE INSPECCIÓN
-       (Inicialmente oculto)
+       CONTENIDO DEL REPORTE
+       (oculto al inicio)
   ========================== -->
-  <section id="inspection-form">
-    <h3>Registro de Inspección</h3>
+  <section id="report-content">
 
-    <form id="inspectionForm">
-
-      <label>
-        Línea:
-        <input type="text" id="linea">
-      </label><br>
+    <!-- DATOS DEL REPORTE -->
+    <section id="report-info">
+      <h3>Datos del Reporte</h3>
 
       <label>
-        Estación:
-        <input type="text" id="estacion">
-      </label><br>
+        Nombre del inspector:
+        <input type="text" id="inspectorName">
+      </label><br><br>
 
       <label>
-        No. de Parte:
-        <input type="text" id="parte">
-      </label><br>
-
-      <label>
-        No. de Hoja:
-        <input type="text" id="hoja">
-      </label><br>
-
-      <label>
-        Altura:
-        <input type="number" id="altura" step="0.01">
-      </label><br>
-
-      <fieldset>
-        <legend>Torcimiento</legend>
-
-        <label>
-          Lado Fijo (LF):
-          <input type="number" id="lf" step="0.01">
-        </label><br>
-
-        <label>
-          Lado Móvil (LM):
-          <input type="number" id="lm" step="0.01">
-        </label>
-      </fieldset>
-
-      <label>
-        Parte plana:
-        <input type="number" id="partePlana" step="0.01">
-      </label><br>
-
-      <label>
-        Hoja caída:
-        <input type="number" id="caida" step="0.01">
-      </label><br>
-
-      <label>
-        Observaciones:
-        <textarea id="observaciones"></textarea>
+        Hora del reporte:
+        <input type="time" id="reportHour">
       </label>
+    </section>
 
-    </form>
+    <hr>
+
+    <!-- FORMULARIO DE INSPECCIÓN -->
+    <section id="inspection-form">
+      <h3>Registro de Inspección</h3>
+
+      <form id="inspectionForm">
+
+        Línea: <input id="linea"><br>
+        Estación: <input id="estacion"><br>
+        No. de Parte: <input id="parte"><br>
+        No. de Hoja: <input id="hoja"><br>
+        Altura: <input type="number" id="altura" step="0.01"><br>
+
+        <strong>Torcimiento</strong><br>
+        LF: <input type="number" id="lf" step="0.01"><br>
+        LM: <input type="number" id="lm" step="0.01"><br>
+
+        Parte plana: <input type="number" id="partePlana" step="0.01"><br>
+        Hoja caída: <input type="number" id="caida" step="0.01"><br>
+
+        Observaciones:<br>
+        <textarea id="observaciones"></textarea>
+      </form>
+    </section>
+
+    <!-- ACCIONES -->
+    <section id="actions">
+      <button id="saveInspection">
+        Guardar registro
+      </button>
+
+      <button id="generateReport" disabled>
+        Generar reporte
+      </button>
+    </section>
+
+    <!-- VISTA PREVIA -->
+    <section id="preview">
+      <h3>Registros guardados</h3>
+
+      <p>
+        Total de registros:
+        <strong><span id="recordCount">0</span></strong>
+      </p>
+
+      <table id="previewTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Hoja</th>
+            <th>Altura</th>
+            <th>LF</th>
+            <th>LM</th>
+            <th>Parte plana</th>
+            <th>Hoja caída</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </section>
+
   </section>
 
-  <!-- =========================
-       ACCIONES
-  ========================== -->
-  <section id="actions">
-    <button id="saveInspection">
-      Guardar registro
-    </button>
-
-    <button id="generateReport">
-      Generar reporte
-    </button>
-  </section>
-
-  <!-- =========================
-       VISTA PREVIA DEL REPORTE
-  ========================== -->
-  <section id="preview">
-    <h3>Registros guardados</h3>
-
-    <p>
-      Total de registros:
-      <span id="recordCount">0</span>
-    </p>
-
-    <!-- Tabla dinámica (se llenará con JS) -->
-    <table id="previewTable">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Hoja</th>
-          <th>Altura</th>
-          <th>LF</th>
-          <th>LM</th>
-          <th>Parte plana</th>
-          <th>Hoja caída</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Filas dinámicas -->
-      </tbody>
-    </table>
-  </section>
-
-  <!-- =========================
-       SCRIPTS DE LA APP
-       (vacíos por ahora)
-  ========================== -->
-  <script src="js/tolerances.js"></script>
-  <script src="js/report.js"></script>
-  <script src="js/inspectionForm.js"></script>
-  <script src="js/pdfGenerator.js"></script>
+  <!-- Scripts -->
   <script src="js/app.js"></script>
 
 </body>
