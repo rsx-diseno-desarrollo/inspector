@@ -90,4 +90,20 @@ function actualizarPreview() {
 function limpiarFormulario() {
   inspectionForm.reset();
 }
-``
+
+generateBtn.addEventListener("click", () => {
+  report.inspector = document.getElementById("inspectorName").value;
+  report.hour = document.getElementById("reportHour").value;
+
+  if (!report.inspector || !report.hour) {
+    alert("Ingrese el nombre del inspector y la hora del reporte.");
+    return;
+  }
+
+  if (report.registros.length === 0) {
+    alert("No hay registros para generar el reporte.");
+    return;
+  }
+
+  generarPDF(report);
+});
