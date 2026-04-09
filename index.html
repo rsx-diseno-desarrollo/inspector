@@ -2,35 +2,165 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Registro de Inspecciones</title>
+  <title>Registro de Inspecciones | Tratamientos Térmicos</title>
+
+  <!-- Estilos generales -->
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Librerías para exportación (se usarán después) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
 
-  <h1>Tratamientos Térmicos – Registro de Inspección</h1>
+  <!-- =========================
+       ENCABEZADO PRINCIPAL
+  ========================== -->
+  <header>
+    <h1>Registro de Inspección</h1>
+    <h2>Área: Tratamientos Térmicos</h2>
+  </header>
 
+  <!-- =========================
+       INFORMACIÓN DEL REPORTE
+  ========================== -->
   <section id="report-info">
-    <input id="inspectorName" placeholder="Nombre del inspector">
-    <input id="reportHour" type="time">
-    <button id="startReport">Iniciar reporte</button>
+    <h3>Datos del Reporte</h3>
+
+    <label>
+      Nombre del inspector:
+      <input type="text" id="inspectorName" placeholder="Nombre completo">
+    </label>
+  <br>
+    <label>
+      Hora del reporte:
+      <input type="time" id="reportHour">
+    </label>
+    <br><br>
+    <button id="startReport">
+      Iniciar reporte
+    </button>
+  </section>
+  <br>
+  <!-- =========================
+       FORMULARIO DE INSPECCIÓN
+       (Inicialmente oculto)
+  ========================== -->
+  <section id="inspection-form">
+    <h3>Registro de Inspección</h3>
+
+    <form id="inspectionForm">
+
+      <label>
+        Línea:
+        <input type="text" id="linea">
+      </label><br>
+
+      <label>
+        Estación:
+        <input type="text" id="estacion">
+      </label><br>
+
+      <label>
+        No. de Parte:
+        <input type="text" id="parte">
+      </label><br>
+
+      <label>
+        No. de Hoja:
+        <input type="text" id="hoja">
+      </label><br>
+
+      <label>
+        Altura:
+        <input type="number" id="altura" step="0.01">
+      </label><br>
+
+      <fieldset>
+        <legend>Torcimiento</legend>
+
+        <label>
+          Lado Fijo (LF):
+          <input type="number" id="lf" step="0.01">
+        </label><br>
+
+        <label>
+          Lado Móvil (LM):
+          <input type="number" id="lm" step="0.01">
+        </label>
+      </fieldset>
+
+      <label>
+        Parte plana:
+        <input type="number" id="partePlana" step="0.01">
+      </label><br>
+
+      <label>
+        Hoja caída:
+        <input type="number" id="caida" step="0.01">
+      </label><br>
+
+      <label>
+        Observaciones:
+        <textarea id="observaciones"></textarea>
+      </label>
+
+    </form>
   </section>
 
-  <section id="inspection-form"></section>
-
+  <!-- =========================
+       ACCIONES
+  ========================== -->
   <section id="actions">
-    <button id="saveInspection">Guardar registro</button>
-    <button id="generateReport">Generar reporte</button>
+    <button id="saveInspection">
+      Guardar registro
+    </button>
+
+    <button id="generateReport">
+      Generar reporte
+    </button>
   </section>
 
-  <!-- Librerías -->
-   <script>https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-   <script>https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <!-- =========================
+       VISTA PREVIA DEL REPORTE
+  ========================== -->
+  <section id="preview">
+    <h3>Registros guardados</h3>
 
-  <!-- Scripts propios -->
+    <p>
+      Total de registros:
+      <span id="recordCount">0</span>
+    </p>
+
+    <!-- Tabla dinámica (se llenará con JS) -->
+    <table id="previewTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Hoja</th>
+          <th>Altura</th>
+          <th>LF</th>
+          <th>LM</th>
+          <th>Parte plana</th>
+          <th>Hoja caída</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filas dinámicas -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- =========================
+       SCRIPTS DE LA APP
+       (vacíos por ahora)
+  ========================== -->
   <script src="js/tolerances.js"></script>
   <script src="js/report.js"></script>
   <script src="js/inspectionForm.js"></script>
   <script src="js/pdfGenerator.js"></script>
   <script src="js/app.js"></script>
+
 </body>
 </html>
