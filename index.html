@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Inspecciones</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <h1>Tratamientos Térmicos – Registro de Inspección</h1>
+
+  <section id="report-info">
+    <input id="inspectorName" placeholder="Nombre del inspector">
+    <input id="reportHour" type="time">
+    <button id="startReport">Iniciar reporte</button>
+  </section>
+
+  <section id="inspection-form"></section>
+
+  <section id="actions">
+    <button id="saveInspection">Guardar registro</button>
+    <button id="generateReport">Generar reporte</button>
+  </section>
+
+  <!-- Librerías -->
+   https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+   https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+  <!-- Scripts propios -->
+  <script src="js/tolerances.js"></script>
+  <script src="js/report.js"></script>
+  <script src="js/inspectionForm.js"></script>
+  <script src="js/pdfGenerator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
