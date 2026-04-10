@@ -12,6 +12,7 @@ let report = {
 // Referencias al DOM
 // ============================
 
+const inspectionForm = document.getElementById("inspectionForm");
 const startButton = document.getElementById("startReport");
 const startSection = document.getElementById("start-section");
 const reportContent = document.getElementById("report-content");
