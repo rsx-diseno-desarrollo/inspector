@@ -1,24 +1,167 @@
+/* -------- PALETA Y TOKENS -------- */
+:root {
+  /* Marca */
+  --color-naranja: #f57c00;
 
+  /* Estados */
+  --color-naranja-700: #e56f00;
+  --color-naranja-50:  #FFF3E7;
+  --color-naranja-100: #FFE4CC;
+
+  /* Neutros */
+  --color-blanco: #ffffff;
+  --color-negro:  #000000;
+  --color-gris-oscuro: #424242;
+  --color-gris-claro:  #F2F2F2;
+  --color-border: #E6E6EA;
+
+  /* Superficies y texto */
+  --color-bg: var(--color-blanco);
+  --color-surface: var(--color-blanco);
+  --color-text: var(--color-negro);
+  --color-text-muted: #666870;
+
+  /* Acento secundario */
+  --color-secondary: #FF9800;
+
+  /* Radius y sombras */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 10px rgba(0,0,0,.08);
+}
+
+/* -------- BASE -------- */
 body {
-      font-family: Arial, sans-serif;
-    }
-    section {
-      margin-bottom: 20px;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #999;
-      padding: 4px;
-      text-align: center;
-      font-size: 12px;
-    }
-    #report-content {
-      display: none;
-    }
-    button {
-      margin-top: 10px;
-    }
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  margin: 0;
+  padding: 20px;
+}
+
+h1, h2, h3 {
+  margin: 0 0 10px 0;
+}
+
+h1 {
+  font-size: 22px;
+}
+
+h2 {
+  font-size: 16px;
+  color: var(--color-text-muted);
+}
+
+h3 {
+  font-size: 15px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+/* Tarjeta */
+#report-content,
+#start-section,
+#preview,
+#inspection-form,
+#report-info {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+button {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: background-color .15s ease, box-shadow .15s ease;
+}
+
+#startReport {
+  background-color: var(--color-naranja);
+  color: white;
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+}
+
+#startReport:hover {
+  background-color: var(--color-naranja-700);
+}
+
+#actions {
+  display: flex;
+  gap: 10px;
+}
+
+#saveInspection {
+  background-color: var(--color-naranja-50);
+  color: var(--color-naranja-700);
+  border: 1px solid var(--color-naranja-100);
+}
+
+#saveInspection:hover {
+  background-color: var(--color-naranja-100);
+}
+
+#generateReport {
+  background-color: var(--color-naranja);
+  color: white;
+  font-weight: 600;
+}
+
+#generateReport:disabled {
+  background-color: var(--color-gris-claro);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+input,
+textarea {
+  width: 100%;
+  max-width: 320px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-naranja);
+  box-shadow: 0 0 0 2px var(--color-naranja-50);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+thead {
+  background-color: var(--color-naranja-50);
+}
+
+th {
+  padding: 6px;
+  border: 1px solid var(--color-border);
+  font-weight: 600;
+}
+
+td {
+  padding: 6px;
+  border: 1px solid var(--color-border);
+}
+
+tbody tr:nth-child(even) {
+  background-color: var(--color-gris-claro);
+}
