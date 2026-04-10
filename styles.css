@@ -61,6 +61,10 @@ section {
   margin-bottom: 20px;
 }
 
+#report-content {
+  display: none;
+}
+
 /* Tarjeta */
 #report-content,
 #start-section,
