@@ -70,12 +70,17 @@ function actualizarPreview() {
 
     fila.innerHTML = `
       <td>${index + 1}</td>
+      <td>${r.time}</td>
+      <td>${r.linea}</td>
+      <td>${r.estacion}</td>
+      <td>${r.parte}</td>
       <td>${r.hoja}</td>
       <td>${r.altura}</td>
       <td>${r.lf}</td>
       <td>${r.lm}</td>
       <td>${r.partePlana}</td>
       <td>${r.caida}</td>
+      <td>${r.observaciones}</td>
     `;
 
     previewTableBody.appendChild(fila);
