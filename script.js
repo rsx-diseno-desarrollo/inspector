@@ -69,6 +69,9 @@ function actualizarPreview() {
     const fila = document.createElement("tr");
 
     fila.innerHTML = `
+      <td>
+       <button class="btn-delete" data-index="${index}">❌</button>
+      </td>
       <td>${index + 1}</td>
       <td>${r.linea}</td>
       <td>${r.estacion}</td>
@@ -87,6 +90,21 @@ function actualizarPreview() {
 
   recordCount.textContent = report.registros.length;
 }
+
+previewTableBody.addEventListener("click", (e) => {
+  if (e.target.classList.contains("btn-delete")) {
+    const index = parseInt(e.target.dataset.index, 10);
+
+    if (confirm("¿Eliminar este registro?")) {
+      report.registros.splice(index, 1);
+      actualizarPreview();
+
+      if (report.registros.length === 0) {
+        generateBtn.disabled = true;
+      }
+    }
+  }
+});
 
 // ============================
 // Limpiar formulario
