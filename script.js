@@ -38,6 +38,7 @@ startButton.addEventListener("click", () => {
 
 saveBtn.addEventListener("click", () => {
   const registro = {
+    time: time.value,
     linea: linea.value,
     estacion: estacion.value,
     parte: parte.value,
