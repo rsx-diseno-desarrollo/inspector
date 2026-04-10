@@ -38,7 +38,6 @@ startButton.addEventListener("click", () => {
 
 saveBtn.addEventListener("click", () => {
   const registro = {
-    time: time.value,
     linea: linea.value,
     estacion: estacion.value,
     parte: parte.value,
@@ -71,7 +70,6 @@ function actualizarPreview() {
 
     fila.innerHTML = `
       <td>${index + 1}</td>
-      <td>${r.time}</td>
       <td>${r.linea}</td>
       <td>${r.estacion}</td>
       <td>${r.parte}</td>
