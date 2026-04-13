@@ -3,22 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="styles.css">
-  <title>Registro de Inspecciones</title>
+  <link rel="icon" href="img/favicon.ico">
+  <link rel="manifest" href="manifest.json">
+  <title>Inspector BETA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
+<header class="app-header">
+  <div class="app-brand">
+    <img src="img/inspector_logo.png" alt="Inspector logo" class="app-logo">
+  </div>
+
+  <div class="area-selector">
+    <label for="areaSelect">Área:</label>
+    <select id="areaSelect">
+      <option value="tt" selected>Tratamientos térmicos</option>
+      <option value="oprev" disabled>Operaciones Previas</option>
+      <option value="ofin" disabled>Operaciones Finales</option>
+      <option value="ecoat" disabled>E‑Coat (Pintura)</option>
+    </select>
+  </div>
+</header>
+
   <!-- =========================
        BOTÓN INICIAL
   ========================== -->
-  <section id="start-section">
-    <h1>Registro de Inspección</h1>
-    <h2>Área: Tratamientos Térmicos</h2>
+  
+<section id="start-section">
+  <h1>Área: Tratamientos Térmicos</h1>
+  <h2>Registro de Inspección</h2>
 
+  <div class="home-actions">
     <button id="startReport">
       Iniciar reporte
     </button>
-  </section>
+
+    <button id="searchReport" disabled>
+      Buscar reporte
+    </button>
+  </div>
+</section>
 
   <!-- =========================
        CONTENIDO DEL REPORTE
@@ -67,15 +92,20 @@
     </section>
 
     <!-- ACCIONES -->
-    <section id="actions">
-      <button id="saveInspection">
-        Guardar registro
-      </button>
+    
+<section id="actions">
+  <button id="saveInspection">
+    Guardar registro
+  </button>
 
-      <button id="generateReport" disabled>
-        Generar reporte
-      </button>
-    </section>
+  <button id="generateReport" disabled>
+    Generar reporte
+  </button>
+
+  <button id="cancelReport" class="danger">
+    Cancelar reporte
+  </button>
+</section>
 
     <!-- VISTA PREVIA -->
     <section id="preview">
@@ -98,8 +128,8 @@
             <th>ALTURA</th>
             <th>TORC. LF</th>
             <th>TORC. LM</th>
-            <th>PARTE PLANA</th>
-            <th>HOJA CAÍDA</th>
+            <th>Parte plana</th>
+            <th>Hoja caída</th>
             <th>OBSERVACIONES</th>
           </tr>
         </thead>
