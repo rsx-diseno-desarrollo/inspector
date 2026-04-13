@@ -19,6 +19,7 @@ const reportContent = document.getElementById("report-content");
 
 const saveBtn = document.getElementById("saveInspection");
 const generateBtn = document.getElementById("generateReport");
+const cancelBtn = document.getElementById("cancelReport");
 
 const recordCount = document.getElementById("recordCount");
 const previewTableBody = document.querySelector("#previewTable tbody");
@@ -106,6 +107,27 @@ previewTableBody.addEventListener("click", (e) => {
   }
 });
 
+function resetApp() {
+  // Reset estado del reporte
+  report = {
+    inspector: "",
+    hour: "",
+    registros: []
+  };
+
+  // Limpiar UI
+  recordCount.textContent = "0";
+  previewTableBody.innerHTML = "";
+  inspectionForm.reset();
+  document.getElementById("inspectorName").value = "";
+  document.getElementById("reportHour").value = "";
+  generateBtn.disabled = true;
+
+  // Volver a pantalla inicial
+  reportContent.style.display = "none";
+  startSection.style.display = "block";
+}
+
 // ============================
 // Limpiar formulario
 // ============================
@@ -129,4 +151,31 @@ generateBtn.addEventListener("click", () => {
   }
 
   generarPDF(report);
+  resetApp();
 });
+
+cancelBtn.addEventListener("click", () => {
+  const confirmCancel = confirm(
+    "¿Estás seguro de cancelar el reporte?\nSe perderán todos los registros capturados."
+  );
+
+  if (!confirmCancel) return;
+
+  resetApp();
+});
+
+
+// ============================
+// Registro del Service Worker
+// ============================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(registration => {
+        console.log('Service Worker registrado:', registration.scope);
+      })
+      .catch(error => {
+        console.error('Error al registrar Service Worker:', error);
+      });
+  });
+}
