@@ -1,12 +1,12 @@
-/* -------- PALETA Y TOKENS -------- */
+/* =========================================
+   PALETA Y TOKENS (IDENTIDAD VISUAL)
+========================================= */
 :root {
-  /* Marca */
-  --color-naranja: #f57c00;
-
-  /* Estados */
-  --color-naranja-700: #e56f00;
-  --color-naranja-50:  #FFF3E7;
-  --color-naranja-100: #FFE4CC;
+  /* Color principal */
+  --color-primary: #0EC701;
+  --color-primary-700: #0BB100;   /* hover */
+  --color-primary-50: #E9FCEB;    /* fondos suaves */
+  --color-primary-100: #CFF7D4;   /* focus / halo */
 
   /* Neutros */
   --color-blanco: #ffffff;
@@ -21,8 +21,8 @@
   --color-text: var(--color-negro);
   --color-text-muted: #666870;
 
-  /* Acento secundario */
-  --color-secondary: #FF9800;
+  /* Estados */
+  --color-danger: #d32f2f;
 
   /* Radius y sombras */
   --radius-sm: 6px;
@@ -31,13 +31,24 @@
   --shadow-md: 0 4px 10px rgba(0,0,0,.08);
 }
 
-/* -------- BASE -------- */
+/* =========================================
+   BASE / LAYOUT
+========================================= */
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
-  margin: 0;
-  padding: 20px;
+  margin: 0 auto;
+  padding: 16px;
+  max-width: 1200px;
+}
+
+section {
+  margin-bottom: 20px;
 }
 
 h1, h2, h3 {
@@ -57,21 +68,19 @@ h3 {
   font-size: 15px;
 }
 
-section {
-  margin-bottom: 20px;
-}
-
-
+/* Estado inicial */
 #report-content {
   display: none;
 }
 
-/* Tarjeta */
-#report-content,
+/* =========================================
+   TARJETAS / CONTENEDORES
+========================================= */
 #start-section,
-#preview,
+#report-content,
+#report-info,
 #inspection-form,
-#report-info {
+#preview {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -79,6 +88,9 @@ section {
   box-shadow: var(--shadow-sm);
 }
 
+/* =========================================
+   BOTONES
+========================================= */
 button {
   font-family: inherit;
   font-size: 14px;
@@ -89,60 +101,89 @@ button {
   transition: background-color .15s ease, box-shadow .15s ease;
 }
 
-#startReport {
-  background-color: var(--color-naranja);
-  color: white;
+/* Botón principal */
+#startReport,
+#generateReport {
+  background-color: var(--color-primary);
+  color: var(--color-blanco);
   font-weight: 600;
   box-shadow: var(--shadow-md);
 }
 
-#startReport:hover {
-  background-color: var(--color-naranja-700);
-}
-
-#actions {
-  display: flex;
-  gap: 10px;
-}
-
-#saveInspection {
-  background-color: var(--color-naranja-50);
-  color: var(--color-naranja-700);
-  border: 1px solid var(--color-naranja-100);
-}
-
-#saveInspection:hover {
-  background-color: var(--color-naranja-100);
-}
-
-#generateReport {
-  background-color: var(--color-naranja);
-  color: white;
-  font-weight: 600;
+#startReport:hover,
+#generateReport:hover {
+  background-color: var(--color-primary-700);
 }
 
 #generateReport:disabled {
   background-color: var(--color-gris-claro);
   color: var(--color-text-muted);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
+/* Botón secundario */
+#saveInspection {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-700);
+  border: 1px solid var(--color-primary-100);
+}
+
+#saveInspection:hover {
+  background-color: var(--color-primary-100);
+}
+
+button.danger {
+  background-color: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+  font-weight: 600;
+}
+
+button.danger:hover {
+  background-color: rgba(211, 47, 47, 0.08);
+}
+
+/* Contenedor de acciones */
+#actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* =========================================
+   INPUTS / FORMULARIOS
+========================================= */
 input,
 textarea {
   width: 100%;
-  max-width: 20em;
+  max-width: 320px;
   padding: 8px 10px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 8px;
+}
+
+textarea {
+  min-height: 60px;
+  resize: vertical;
 }
 
 input:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--color-naranja);
-  box-shadow: 0 0 0 2px var(--color-naranja-50);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-50);
+}
+
+/* =========================================
+   TABLA PREVIEW
+========================================= */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
@@ -150,46 +191,137 @@ table {
   border-collapse: collapse;
   margin-top: 10px;
   font-size: 12px;
+  min-width: 900px;
 }
 
 thead {
-  background-color: var(--color-naranja-50);
+  background-color: var(--color-primary-50);
 }
 
-th {
-  padding: 6px;
-  border: 1px solid var(--color-border);
-  font-weight: 600;
-}
-
+th,
 td {
+  padding: 6px;
   border: 1px solid var(--color-border);
   text-align: center;
   vertical-align: middle;
+}
+
+th {
+  font-weight: 600;
 }
 
 tbody tr:nth-child(even) {
   background-color: var(--color-gris-claro);
 }
 
+/* Acción eliminar */
 .btn-delete {
   background: transparent;
   border: none;
-  color: #d32f2f;
+  color: var(--color-danger);
   cursor: pointer;
   font-size: 14px;
 }
 
 .btn-delete:hover {
-  color: #b71c1c;
+  opacity: 0.8;
 }
 
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+
+  #actions {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  input,
+  textarea {
+    font-size: 16px;
+  }
 }
 
-.table-wrapper table {
-  min-width: 900px; /* ajusta según columnas */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-logo {
+  height: 5rem;
+}
+
+.area-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.area-selector label {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.area-selector select {
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  font-size: 14px;
+}
+
+.area-selector select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-50);
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .area-selector {
+    width: 100%;
+  }
+
+  .area-selector select {
+    width: 100%;
+  }
+}
+
+.home-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+#searchReport {
+  background-color: var(--color-gris-claro);
+  color: var(--color-text-muted);
+}
+
+#searchReport:disabled {
+  cursor: not-allowed;
+  box-shadow: none;
 }
