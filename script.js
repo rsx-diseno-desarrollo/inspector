@@ -132,8 +132,15 @@ function resetApp() {
 // Limpiar formulario
 // ============================
 
+
 function limpiarFormulario() {
+  // Guardamos temporalmente el No. de Parte
+  const parteActual = document.getElementById("parte").value;
+
   inspectionForm.reset();
+
+  // Restauramos el No. de Parte
+  document.getElementById("parte").value = parteActual;
 }
 
 generateBtn.addEventListener("click", () => {
