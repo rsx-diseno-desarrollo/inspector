@@ -4,12 +4,16 @@
 
 // Torcimiento LF y LM: máximo 1.5
 function evaluarTorcimiento(valor) {
-  return valor <= 1.5 ? "OK" : "NO_OK";
+  if (valor <= 1.5) return "OK";
+  if (valor <= 2.0) return "WARN";
+  return "NO_OK";
 }
 
 // Hoja caída: rango 0.80 a 1.50
 function evaluarHojaCaida(valor) {
-  return valor >= 0.8 && valor <= 1.5 ? "OK" : "NO_OK";
+  if (valor < 0.8) return "OK";
+  if (valor === 0.8) return "WARN";
+  return "NO_OK";
 }
 
 // Evaluación completa de un registro
@@ -22,7 +26,8 @@ function evaluarRegistro(registro) {
 }
 
 // Colores para tolerancias (suaves y corporativos)
-const COLOR_OK = [233, 252, 235];     // verde suave
+const COLOR_OK = [233, 252, 235];      // verde suave
+const COLOR_WARN = [255, 249, 196];   // amarillo suave
 const COLOR_NO_OK = [255, 224, 224];  // rojo suave
 
 function generarPDF(report) {
@@ -54,7 +59,7 @@ doc.text(
   { align: "center" }
 );
 
-doc.setDrawColor(245, 124, 0); // naranja marca
+doc.setDrawColor(14, 199, 1); // verde corporativo
 doc.setLineWidth(0.8);
 doc.line(10, 26, pageWidth - 10, 26);
 
@@ -122,6 +127,12 @@ while (bodyData.length < 18) {
   });
 }
 
+function colorPorEstado(estado) {
+  if (estado === "OK") return COLOR_OK;
+  if (estado === "WARN") return COLOR_WARN;
+  return COLOR_NO_OK;
+}
+
   doc.autoTable({
   startY: 38,
   head: headers,
@@ -145,27 +156,22 @@ while (bodyData.length < 18) {
   },
 
   didParseCell: function (data) {
-    if (data.section !== "body") return;
-
     const rowStatus = bodyData[data.row.index].status;
 
-    // Columna TORC. LF → índice 6
-    if (data.column.index === 6) {
-      data.cell.styles.fillColor =
-        rowStatus.lf === "OK" ? COLOR_OK : COLOR_NO_OK;
-    }
+    // TORC. LF
+if (data.column.index === 6) {
+  data.cell.styles.fillColor = colorPorEstado(rowStatus.lf);
+}
 
-    // Columna TORC. LM → índice 7
-    if (data.column.index === 7) {
-      data.cell.styles.fillColor =
-        rowStatus.lm === "OK" ? COLOR_OK : COLOR_NO_OK;
-    }
+// TORC. LM
+if (data.column.index === 7) {
+  data.cell.styles.fillColor = colorPorEstado(rowStatus.lm);
+}
 
-    // Columna HOJA CAÍDA → índice 9
-    if (data.column.index === 9) {
-      data.cell.styles.fillColor =
-        rowStatus.caida === "OK" ? COLOR_OK : COLOR_NO_OK;
-    }
+// HOJA CAÍDA
+if (data.column.index === 9) {
+  data.cell.styles.fillColor = colorPorEstado(rowStatus.caida);
+}
   },
 
   alternateRowStyles: {
