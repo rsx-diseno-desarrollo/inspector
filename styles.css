@@ -152,7 +152,7 @@ button.danger:hover {
 }
 
 /* =========================================
-   INPUTS / FORMULARIOS
+   INPUTS / FORMULARIOS / SELECTS
 ========================================= */
 input,
 textarea {
@@ -175,6 +175,51 @@ textarea:focus {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 2px var(--color-primary-50);
+}
+
+/* =========================================
+   SELECTORES (DROPDOWNS)
+========================================= */
+select {
+  width: 100%;
+  max-width: 320px;
+  padding: 8px 36px 8px 10px; /* espacio para la flecha */
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 14px;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+
+  /* Quitar estilos nativos inconsistentes */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* Flecha personalizada */
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--color-text-muted) 50%),
+    linear-gradient(135deg, var(--color-text-muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 2px),
+    calc(100% - 12px) calc(50% - 2px);
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+
+  margin-bottom: 8px;
+}
+
+/* Focus igual que inputs */
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-50);
+}
+
+/* Disabled (por ejemplo áreas futuras) */
+select:disabled {
+  background-color: var(--color-gris-claro);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
 }
 
 /* =========================================
@@ -324,4 +369,10 @@ tbody tr:nth-child(even) {
 #searchReport:disabled {
   cursor: not-allowed;
   box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  select {
+    font-size: 16px; /* evita zoom en mobile */
+  }
 }
