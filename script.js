@@ -24,6 +24,36 @@ const cancelBtn = document.getElementById("cancelReport");
 const recordCount = document.getElementById("recordCount");
 const previewTableBody = document.querySelector("#previewTable tbody");
 
+const searchBtn = document.getElementById("searchReport");
+const searchSection = document.getElementById("search-section");
+const toggleAdvancedBtn = document.getElementById("toggleAdvanced");
+const advancedSection = document.getElementById("advanced-search");
+const backHomeBtn = document.getElementById("backHome");
+
+// ============================
+// Buscar reporte
+// ============================
+
+searchBtn.addEventListener("click", () => {
+  startSection.style.display = "none";
+  reportContent.style.display = "none";
+  searchSection.style.display = "block";
+});
+
+toggleAdvancedBtn.addEventListener("click", () => {
+  const isVisible = advancedSection.style.display === "block";
+
+  advancedSection.style.display = isVisible ? "none" : "block";
+  toggleAdvancedBtn.textContent = isVisible
+    ? "▸ Búsqueda avanzada"
+    : "▾ Búsqueda avanzada";
+});
+
+backHomeBtn.addEventListener("click", () => {
+  searchSection.style.display = "none";
+  startSection.style.display = "block";
+});
+
 // ============================
 // Iniciar reporte
 // ============================
