@@ -73,6 +73,13 @@ h3 {
   display: none;
 }
 
+.home-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
 /* =========================================
    TARJETAS / CONTENEDORES
 ========================================= */
@@ -103,7 +110,7 @@ button {
 
 /* Botón principal */
 #startReport,
-#generateReport {
+#generateReport, #executeSearch {
   background-color: var(--color-primary);
   color: var(--color-blanco);
   font-weight: 600;
@@ -111,8 +118,24 @@ button {
 }
 
 #startReport:hover,
-#generateReport:hover {
+#generateReport:hover, #executeSearch:hover {
   background-color: var(--color-primary-700);
+}
+
+#searchReport {
+  background-color: var(--color-gris-claro);
+  color: var(--color-text);
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+}
+
+#searchReport:hover {
+  background-color: var( --color-primary-50);
+}
+
+#searchReport:disabled {
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 #generateReport:disabled {
@@ -149,6 +172,14 @@ button.danger:hover {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.search-basic,
+#advanced-search {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
 }
 
 /* =========================================
@@ -325,7 +356,6 @@ tbody tr:nth-child(even) {
 }
 
 .area-selector select {
-  padding: 6px 10px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   background-color: var(--color-surface);
@@ -352,23 +382,6 @@ tbody tr:nth-child(even) {
   .area-selector select {
     width: 100%;
   }
-}
-
-.home-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-
-#searchReport {
-  background-color: var(--color-gris-claro);
-  color: var(--color-text-muted);
-}
-
-#searchReport:disabled {
-  cursor: not-allowed;
-  box-shadow: none;
 }
 
 @media (max-width: 768px) {
