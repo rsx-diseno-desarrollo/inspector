@@ -39,10 +39,77 @@
       Iniciar reporte
     </button>
 
-    <button id="searchReport" disabled>
+    <button id="searchReport">
       Buscar reporte
     </button>
   </div>
+</section>
+
+<!-- =========================
+     BÚSQUEDA DE REPORTES
+========================== -->
+<section id="search-section" style="display:none;">
+  <h1>Buscar reporte</h1>
+
+  <!-- BÚSQUEDA BÁSICA -->
+  <section class="search-basic">
+    <h3>Búsqueda rápida</h3>
+
+    <label>
+      Folio del reporte:
+      <input type="text" id="searchFolio" placeholder="R-TT-DDMMYYYY-###">
+    </label><br><br>
+
+    <label>
+      Fecha:
+      <input type="date" id="searchDate">
+    </label>
+  </section>
+
+  <br>
+
+  <!-- TOGGLE BÚSQUEDA AVANZADA -->
+  <button id="toggleAdvanced" class="secondary">
+    ▸ Búsqueda avanzada
+  </button>
+
+  <!-- BÚSQUEDA AVANZADA -->
+  <section id="advanced-search" style="display:none; margin-top:12px;">
+    <h3>Búsqueda avanzada</h3>
+
+    <label>
+      Inspector:
+      <input type="text" id="searchInspector">
+    </label><br>
+
+    <label>
+      Línea:
+      <select id="searchLinea">
+        <option value="">Todas</option>
+        <option value="L1">L1</option>
+        <option value="L4">L4</option>
+        <option value="L5">L5</option>
+      </select>
+    </label><br>
+
+    <label>
+      Hora:
+      <input type="time" id="searchHour">
+    </label>
+  </section>
+
+  <br>
+
+  <section class="home-actions">
+    <button id="executeSearch">
+      Buscar
+    </button>
+
+    <button id="backHome" class="secondary">
+      Volver
+    </button>
+  </section>
+
 </section>
 
   <!-- =========================
@@ -72,26 +139,27 @@
       <h3>Registro de Inspección</h3>
 
       <form id="inspectionForm">
+
         Línea:
-        <select id="linea">
-          <option value="">Seleccionar linea</option>
-          <option value="L1">L1</option>
-          <option value="L4">L4</option>
-          <option value="L5">L5</option>
-        </select><br>
+<select id="linea">
+  <option value="">Seleccionar linea</option>
+  <option value="L1">L1</option>
+  <option value="L4">L4</option>
+  <option value="L5">L5</option>
+</select><br>
         Estación:
-        <select id="estacion">
-          <option value="">Seleccionar estación</option>
-          <option value="E1">E1</option>
-          <option value="E2">E2</option>
-          <option value="E3">E3</option>
-          <option value="E4">E4</option>
-          <option value="E5">E5</option>
-          <option value="E6">E6</option>
-          <option value="E7">E7</option>
-          <option value="E8">E8</option>
-          <option value="E9">E9</option>
-        </select><br>
+<select id="estacion">
+  <option value="">Seleccionar estación</option>
+  <option value="E1">E1</option>
+  <option value="E2">E2</option>
+  <option value="E3">E3</option>
+  <option value="E4">E4</option>
+  <option value="E5">E5</option>
+  <option value="E6">E6</option>
+  <option value="E7">E7</option>
+  <option value="E8">E8</option>
+  <option value="E9">E9</option>
+</select><br>
         No. de Parte: <input id="parte"><br>
         No. de Hoja: <input id="hoja"><br>
         Altura: <input type="number" id="altura" step="0.01"><br>
@@ -142,7 +210,7 @@
       <table id="previewTable">
         <thead>
           <tr>
-            <th>Acción</th>
+            <th>Borrar</th>
             <th>#</th>
             <th>LINEA</th>
             <th>ESTACION</th>
