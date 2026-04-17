@@ -103,8 +103,8 @@ if (texto.includes("parte plana no ok")) {
 }
 
   // LÍNEA
-  let match = texto.match(/linea\s(\d)/);
-if (match) {
+  match = texto.match(/linea\s(\d)/);
+  if (match) {
   linea.value = "L" + match[1];
   feedback("Línea " + match[1]);
 }
