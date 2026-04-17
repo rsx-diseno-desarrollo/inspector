@@ -30,6 +30,8 @@ const toggleAdvancedBtn = document.getElementById("toggleAdvanced");
 const advancedSection = document.getElementById("advanced-search");
 const backHomeBtn = document.getElementById("backHome");
 
+const voiceControl = document.getElementById("voiceControl");
+
 // ============================
 // Buscar reporte
 // ============================
@@ -61,6 +63,7 @@ backHomeBtn.addEventListener("click", () => {
 startButton.addEventListener("click", () => {
   startSection.style.display = "none";
   reportContent.style.display = "block";
+  voiceControl.classList.remove("hidden");
 });
 
 // ============================
@@ -142,7 +145,7 @@ function resetApp() {
   report = {
     inspector: "",
     hour: "",
-    registros: []
+    registros: []  
   };
 
   // Limpiar UI
@@ -156,6 +159,13 @@ function resetApp() {
   // Volver a pantalla inicial
   reportContent.style.display = "none";
   startSection.style.display = "block";
+
+  voiceControl.classList.add("hidden");
+
+// Asegurarse de apagar micrófono
+if (window.dictadoActivo) {
+  detenerDictado();
+  }
 }
 
 // ============================
