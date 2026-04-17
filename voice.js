@@ -7,20 +7,14 @@ recognition.lang = "es-MX";
 recognition.continuous = false;
 recognition.interimResults = false;
 
-// ===============================
-// BOTÓN VOZ (créalo en HTML)
-// ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.createElement("button");
-  btn.id = "voiceBtn";
-  btn.innerText = "🎤 Dictar";
-  btn.style.marginTop = "10px";
+  const btn = document.getElementById("voiceBtn");
 
-  document.getElementById("actions").appendChild(btn);
-
-  btn.addEventListener("click", () => {
-    iniciarReconocimiento();
-  });
+  if (btn) {
+    btn.addEventListener("click", () => {
+      iniciarReconocimiento();
+    });
+  }
 });
 
 // ===============================
