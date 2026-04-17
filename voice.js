@@ -1,10 +1,14 @@
 // ===============================
 // CONFIGURACIÓN
 // ===============================
+
+let dictadoActivo = false;
+window.dictadoActivo = dictadoActivo;
+
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
 recognition.lang = "es-MX";
-recognition.continuous = false;
+recognition.continuous = true;
 recognition.interimResults = false;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -29,15 +33,58 @@ function iniciarReconocimiento() {
   }
 }
 
+function iniciarDictado() {
+  dictadoActivo = true;
+  window.dictadoActivo = true;
+
+  try {
+  recognition.start();
+} catch (e) {
+  console.warn("Micrófono ya activo");
+}
+
+  voiceToggle.classList.remove("off");
+  voiceToggle.classList.add("on");
+  voiceStatus.textContent = "Escuchando…";
+
+  feedback("Modo dictado activado");
+}
+
+function detenerDictado() {
+  dictadoActivo = false;
+  window.dictadoActivo = false;
+
+  recognition.stop();
+
+  voiceToggle.classList.remove("on");
+  voiceToggle.classList.add("off");
+  voiceStatus.textContent = "Dictado apagado";
+
+  feedback("Modo dictado desactivado");
+}
+
+
 // ===============================
 // RESULTADO
 // ===============================
 recognition.onresult = (event) => {
-  let texto = event.results[0][0].transcript;
+  let texto = event.results[event.results.length - 1][0].transcript;
   texto = normalizarTexto(texto);
-  console.log("Detectado:", texto);
 
+  // SOLO procesar si empieza con "inspector"
+  if (!texto.startsWith("inspector")) return;
+
+  // Quitamos la palabra de activación
+  texto = texto.replace("inspector", "").trim();
+
+  console.log("Comando:", texto);
   procesarTexto(texto);
+};
+
+recognition.onend = () => {
+  if (dictadoActivo) {
+    recognition.start();
+  }
 };
 
 function normalizarTexto(texto) {
@@ -133,6 +180,19 @@ if (texto.includes("parte plana no ok")) {
     generateReport.click();
     feedback("Generando reporte");
   }
+
+const voiceToggle = document.getElementById("voiceToggle");
+const voiceStatus = document.getElementById("voiceStatus");
+
+if (voiceToggle) {
+  voiceToggle.addEventListener("click", () => {
+    if (!dictadoActivo) {
+      iniciarDictado();
+    } else {
+      detenerDictado();
+    }
+  });
+ }
 }
 
 // ===============================
