@@ -103,6 +103,29 @@ function procesarTexto(texto) {
     document.getElementById("saveInspection").click();
     feedback("Registro guardado");
   }
+
+  let match = texto.match(/linea\s(\d)/);
+if (match) {
+  document.getElementById("linea").value = "L" + match[1];
+  feedback("Línea " + match[1]);
+}
+
+  match = texto.match(/estacion\s(\d)/);
+if (match) {
+  document.getElementById("estacion").value = "E" + match[1];
+  feedback("Estación " + match[1]);
+}
+
+match = texto.match(/parte\s(\d+)/);
+if (match) {
+  document.getElementById("parte").value = match[1];
+  feedback("Parte " + match[1]);
+}
+
+if (texto.includes("generar reporte")) {
+  document.getElementById("generateReport").click();
+  feedback("Generando reporte");
+}
 }
 
 // ===============================
