@@ -213,13 +213,17 @@ button.danger:hover {
   transition: background 0.3s, box-shadow 0.3s;
 }
 
+#voiceToggle img {
+    width: 100%;
+}
+
 .voice-btn.on {
-  background: #0EC701; /* tu verde */
+  background: #d32f2f;
   box-shadow: 0 0 12px rgba(14, 199, 1, 0.8);
 }
 
 .voice-btn.off {
-  background: #666;
+  background: #0EC701;
 }
 
 .voice-status {
