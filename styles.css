@@ -219,11 +219,12 @@ button.danger:hover {
 
 .voice-btn.on {
   background: #d32f2f;
-  box-shadow: 0 0 12px rgba(14, 199, 1, 0.8);
+  box-shadow: 0 0 12px rgba(255, 13, 0, 0.8);
 }
 
 .voice-btn.off {
   background: #0EC701;
+  box-shadow: 0 0 12px rgba(14, 199, 1, 0.8);
 }
 
 .voice-status {
