@@ -76,20 +76,20 @@ if (match) {
   match = texto.match(/(lado fijo|lf)\s(\d+(\.\d+)?)/);
   if (match) {
     lf.value = match[2];
-    feedback("LF " + match[2]);
+    feedback("Lado Fijo " + match[2]);
   }
 
   // LM
   match = texto.match(/(lado movil|lm)\s(\d+(\.\d+)?)/);
   if (match) {
     lm.value = match[2];
-    feedback("LM " + match[2]);
+    feedback("Lado Movil " + match[2]);
   }
 // PARTE
   match = texto.match(/parte\s(\d+)/);
 if (match) {
   parte.value = match[1];
-  feedback("Parte " + match[1]);
+  feedback("Numero de Parte " + match[1]);
 }
 // PARTE PLANA
 if (texto.includes("parte plana ok")) {
@@ -123,11 +123,10 @@ if (texto.includes("parte plana no ok")) {
 }
 
   // GUARDAR
- match = texto.match(/estacion\s(\d)/);
-if (match) {
-  estacion.value = "E" + match[1];
-  feedback("Estación " + match[1]);
-}
+ if (texto.includes("guardar")) {
+    saveInspection.click();
+    feedback("Registro guardado");
+  }
 
   // GENERAR REPORTE
   if (texto.includes("generar reporte")) {
