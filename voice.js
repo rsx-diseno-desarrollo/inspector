@@ -2,24 +2,25 @@
 // CONFIGURACIÓN
 // ===============================
 
-let dictadoActivo = false;
-window.dictadoActivo = dictadoActivo;
+window.dictadoActivo = false;
 
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+const voiceToggle = document.getElementById("voiceToggle");
+const voiceStatus = document.getElementById("voiceStatus");
+
+if (voiceToggle) {
+  voiceToggle.addEventListener("click", () => {
+    if (!dictadoActivo) {
+      iniciarDictado();
+    } else {
+      detenerDictado();
+    }
+  });
+ }
 
 recognition.lang = "es-MX";
 recognition.continuous = true;
 recognition.interimResults = false;
-
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("voiceBtn");
-
-  if (btn) {
-    btn.addEventListener("click", () => {
-      iniciarReconocimiento();
-    });
-  }
-});
 
 // ===============================
 // INICIAR VOZ
@@ -180,19 +181,6 @@ if (texto.includes("parte plana no ok")) {
     generateReport.click();
     feedback("Generando reporte");
   }
-
-const voiceToggle = document.getElementById("voiceToggle");
-const voiceStatus = document.getElementById("voiceStatus");
-
-if (voiceToggle) {
-  voiceToggle.addEventListener("click", () => {
-    if (!dictadoActivo) {
-      iniciarDictado();
-    } else {
-      detenerDictado();
-    }
-  });
- }
 }
 
 // ===============================
