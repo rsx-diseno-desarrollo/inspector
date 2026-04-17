@@ -53,7 +53,7 @@ function procesarTexto(texto) {
   let match;
 
   // ALTURA
-  match = texto.match(/altura\s(\d+(\.\d+)?)/);
+  match = texto.match("altura");
   if (match) {
     document.getElementById("altura").value = match[1];
     feedback("Altura " + match[1]);
