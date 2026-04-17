@@ -182,6 +182,54 @@ button.danger:hover {
   padding: 12px;
 }
 
+/* =========================
+ VOZ - CONTROL FLOTANTE
+========================= */
+
+.voice-control {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.voice-control.hidden {
+  display: none;
+}
+
+.voice-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  background: #444;
+  color: white;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.voice-btn.on {
+  background: #0EC701; /* tu verde */
+  box-shadow: 0 0 12px rgba(14, 199, 1, 0.8);
+}
+
+.voice-btn.off {
+  background: #666;
+}
+
+.voice-status {
+  font-size: 12px;
+  color: #333;
+  background: #eee;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
 /* =========================================
    INPUTS / FORMULARIOS / SELECTS
 ========================================= */
