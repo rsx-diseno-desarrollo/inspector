@@ -53,79 +53,51 @@ function procesarTexto(texto) {
   let match;
 
   // ALTURA
-  match = texto.match("altura");
+  match = texto.match(/altura\s(\d+(\.\d+)?)/);
   if (match) {
-    document.getElementById("altura").value = match[1];
+    altura.value = match[1];
     feedback("Altura " + match[1]);
   }
 
   // LF
-  match = texto.match("lado fijo");
+  match = texto.match(/(lado fijo|lf)\s(\d+(\.\d+)?)/);
   if (match) {
-    document.getElementById("lf").value = match[2];
-    feedback("Lado fijo " + match[2]);
+    lf.value = match[2];
+    feedback("LF " + match[2]);
   }
 
   // LM
-  match = texto.match("lado movil");
+  match = texto.match(/(lado movil|lm)\s(\d+(\.\d+)?)/);
   if (match) {
-    document.getElementById("lm").value = match[2];
-    feedback("Lado móvil " + match[2]);
+    lm.value = match[2];
+    feedback("LM " + match[2]);
   }
 
-  // HOJA CAIDA
-  match = texto.match("hoja caida");
+  // LÍNEA
+  match = texto.match(/linea\s(\d)/);
   if (match) {
-    document.getElementById("caida").value = match[1];
-    feedback("Hoja caída " + match[1]);
+    linea.value = "L" + match[1];
+    feedback("Línea " + match[1]);
   }
 
-  // PARTE PLANA
-  if (texto.includes("parte plana ok")) {
-    document.getElementById("partePlana").value = "OK";
-    feedback("Parte plana OK");
-  }
-
-  if (texto.includes("parte plana no")) {
-    document.getElementById("partePlana").value = "NOT_OK";
-    feedback("Parte plana no OK");
-  }
-
-  // OBSERVACIONES
-  if (texto.includes("observaciones")) {
-    let obs = texto.split("observaciones")[1];
-    document.getElementById("observaciones").value = obs.trim();
-    feedback("Observaciones registradas");
+  // ESTACIÓN
+  match = texto.match(/estacion\s(\d)/);
+  if (match) {
+    estacion.value = "E" + match[1];
+    feedback("Estación " + match[1]);
   }
 
   // GUARDAR
   if (texto.includes("guardar")) {
-    document.getElementById("saveInspection").click();
+    saveInspection.click();
     feedback("Registro guardado");
   }
 
-  let match = texto.match("linea");
-if (match) {
-  document.getElementById("linea").value = "L" + match[1];
-  feedback("Línea " + match[1]);
-}
-
-  match = texto.match("estacion");
-if (match) {
-  document.getElementById("estacion").value = "E" + match[1];
-  feedback("Estación " + match[1]);
-}
-
-match = texto.match("parte");
-if (match) {
-  document.getElementById("parte").value = match[1];
-  feedback("Parte " + match[1]);
-}
-
-if (texto.includes("generar reporte")) {
-  document.getElementById("generateReport").click();
-  feedback("Generando reporte");
-}
+  // GENERAR REPORTE
+  if (texto.includes("generar reporte")) {
+    generateReport.click();
+    feedback("Generando reporte");
+  }
 }
 
 // ===============================
