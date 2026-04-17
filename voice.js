@@ -133,12 +133,6 @@ if (match) {
     lm.value = match[2];
     feedback("Lado Movil " + match[2]);
   }
-// PARTE
-  match = texto.match(/parte\s(\d+)/);
-if (match) {
-  parte.value = match[1];
-  feedback("Numero de Parte " + match[1]);
-}
 // PARTE PLANA
 if (texto.includes("parte plana ok")) {
   partePlana.value = "OK";
