@@ -60,21 +60,21 @@ function procesarTexto(texto) {
   }
 
   // LF
-  match = texto.match(/(lado fijo|lf)\s(\d+(\.\d+)?)/);
+  match = texto.match("lado fijo");
   if (match) {
     document.getElementById("lf").value = match[2];
     feedback("Lado fijo " + match[2]);
   }
 
   // LM
-  match = texto.match(/(lado movil|lm)\s(\d+(\.\d+)?)/);
+  match = texto.match("lado movil");
   if (match) {
     document.getElementById("lm").value = match[2];
     feedback("Lado móvil " + match[2]);
   }
 
   // HOJA CAIDA
-  match = texto.match(/hoja caida\s(\d+(\.\d+)?)/);
+  match = texto.match("hoja caida");
   if (match) {
     document.getElementById("caida").value = match[1];
     feedback("Hoja caída " + match[1]);
@@ -104,19 +104,19 @@ function procesarTexto(texto) {
     feedback("Registro guardado");
   }
 
-  let match = texto.match(/linea\s(\d)/);
+  let match = texto.match("linea");
 if (match) {
   document.getElementById("linea").value = "L" + match[1];
   feedback("Línea " + match[1]);
 }
 
-  match = texto.match(/estacion\s(\d)/);
+  match = texto.match("estacion");
 if (match) {
   document.getElementById("estacion").value = "E" + match[1];
   feedback("Estación " + match[1]);
 }
 
-match = texto.match(/parte\s(\d+)/);
+match = texto.match("parte");
 if (match) {
   document.getElementById("parte").value = match[1];
   feedback("Parte " + match[1]);
