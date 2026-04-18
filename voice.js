@@ -3,6 +3,7 @@
 // ===============================
 
 window.dictadoActivo = false;
+let esperandoComando = false;
 
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 const voiceToggle = document.getElementById("voiceToggle");
@@ -64,6 +65,47 @@ function detenerDictado() {
   feedback("Modo dictado desactivado");
 }
 
+function activarModoComando() {
+  esperandoComando = true;
+
+  reproducirBeep();
+
+  // Timeout de seguridad (opcional)
+  setTimeout(() => {
+    esperandoComando = false;
+  }, 6000);
+}
+
+function reproducirBeep() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.frequency.value = 800;
+  osc.type = "sine";
+
+  osc.start();
+  gain.gain.setValueAtTime(1, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+
+  osc.stop(ctx.currentTime + 0.15);
+}
+
+function textoANumero(texto) {
+  const mapa = {
+    uno: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5,
+    seis: 6, siete: 7, ocho: 8, nueve: 9, diez: 10
+  };
+
+  Object.keys(mapa).forEach(palabra => {
+    texto = texto.replace(palabra, mapa[palabra]);
+  });
+
+  return texto;
+}
 
 // ===============================
 // RESULTADO
@@ -72,14 +114,19 @@ recognition.onresult = (event) => {
   let texto = event.results[event.results.length - 1][0].transcript;
   texto = normalizarTexto(texto);
 
-  // SOLO procesar si empieza con "inspector"
-  if (!texto.startsWith("inspector")) return;
+  // FASE 1: detectar wake word
+  if (texto.includes("inspector") && !esperandoComando) {
+  activarModoComando();
+  return;
+}
 
-  // Quitamos la palabra de activación
-  texto = texto.replace("inspector", "").trim();
+  // FASE 2: ejecutar comando
+  if (esperandoComando) {
+  if (texto.length < 3) return; // evita ruido corto
 
-  console.log("Comando:", texto);
   procesarTexto(texto);
+  esperandoComando = false;
+}
 };
 
 recognition.onend = () => {
