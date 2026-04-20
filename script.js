@@ -86,22 +86,54 @@ function validarRegistro() {
   return faltantes;
 }
 
+function mostrarMensaje(texto) {
+  let box = document.getElementById("mensajeTemporal");
+
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "mensajeTemporal";
+    box.style.position = "fixed";
+    box.style.bottom = "100px";
+    box.style.right = "20px";
+    box.style.background = "#ffe0e0";
+    box.style.color = "#900";
+    box.style.padding = "10px 14px";
+    box.style.borderRadius = "8px";
+    box.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+    box.style.zIndex = "1000";
+    document.body.appendChild(box);
+  }
+
+  box.textContent = texto;
+  box.style.display = "block";
+
+  setTimeout(() => {
+    box.style.display = "none";
+  }, 3000);
+}
+
 
 saveBtn.addEventListener("click", () => {
 
   const faltantes = validarRegistro();
 
+  //
   if (faltantes.length > 0) {
     const mensaje =
       faltantes.length === 1
         ? "Falta capturar " + faltantes[0]
         : "Faltan capturar " + faltantes.join(", ");
 
-    alert(mensaje);
-    feedback(mensaje);
+    //
+    feedback(mensaje, "error");
+
+    // (opcional) mensaje visual no bloqueante
+    mostrarMensaje(mensaje);
+
     return;
   }
 
+  //
   const registro = {
     linea: linea.value,
     estacion: estacion.value,
@@ -119,6 +151,9 @@ saveBtn.addEventListener("click", () => {
   actualizarPreview();
   limpiarFormulario();
   generateBtn.disabled = false;
+
+  //
+  feedback("Registro guardado", "confirmacion");
 });
 
 // ============================
