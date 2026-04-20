@@ -211,12 +211,6 @@ if (texto.includes("parte plana no ok")) {
   feedback("Observaciones registradas");
 }
 
-  // GUARDAR
- if (texto.includes("guardar")) {
-    saveInspection.click();
-    feedback("Registro guardado");
-  }
-
   // GENERAR REPORTE
   if (texto.includes("generar reporte")) {
     generateReport.click();
