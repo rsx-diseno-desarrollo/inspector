@@ -71,18 +71,21 @@ startButton.addEventListener("click", () => {
 // ============================
 
 function validarRegistro() {
-  if (!linea.value) return "Línea";
-  if (!estacion.value) return "Estación";
-  if (!parte.value) return "Número de Parte";
-  if (!hoja.value) return "Hoja";
-  if (!altura.value) return "Altura";
-  if (!lf.value) return "Lado Fijo (LF)";
-  if (!lm.value) return "Lado Móvil (LM)";
-  if (!partePlana.value) return "Parte plana";
-  if (!caida.value) return "Hoja caída";
+  const faltantes = [];
 
-  return null; // todo OK
+  if (!linea.value) faltantes.push("línea");
+  if (!estacion.value) faltantes.push("estación");
+  if (!parte.value) faltantes.push("número de parte");
+  if (!hoja.value) faltantes.push("hoja");
+  if (!altura.value) faltantes.push("altura");
+  if (!lf.value) faltantes.push("lado fijo");
+  if (!lm.value) faltantes.push("lado móvil");
+  if (!partePlana.value) faltantes.push("parte plana");
+  if (!caida.value) faltantes.push("hoja caída");
+
+  return faltantes;
 }
+
 
 saveBtn.addEventListener("click", () => {
 
