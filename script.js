@@ -89,11 +89,16 @@ function validarRegistro() {
 
 saveBtn.addEventListener("click", () => {
 
-  const campoFaltante = validarRegistro();
+  const faltantes = validarRegistro();
 
-  if (campoFaltante) {
-    alert("Falta capturar: " + campoFaltante);
-    feedback("Falta capturar " + campoFaltante);
+  if (faltantes.length > 0) {
+    const mensaje =
+      faltantes.length === 1
+        ? "Falta capturar " + faltantes[0]
+        : "Faltan capturar " + faltantes.join(", ");
+
+    alert(mensaje);
+    feedback(mensaje);
     return;
   }
 
@@ -107,7 +112,7 @@ saveBtn.addEventListener("click", () => {
     lm: lm.value,
     partePlana: partePlana.value,
     caida: caida.value,
-    observaciones: observaciones.value // opcional
+    observaciones: observaciones.value
   };
 
   report.registros.push(registro);
