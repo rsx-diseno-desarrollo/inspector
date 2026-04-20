@@ -70,7 +70,30 @@ startButton.addEventListener("click", () => {
 // Guardar registro
 // ============================
 
+function validarRegistro() {
+  if (!linea.value) return "Línea";
+  if (!estacion.value) return "Estación";
+  if (!parte.value) return "Número de Parte";
+  if (!hoja.value) return "Hoja";
+  if (!altura.value) return "Altura";
+  if (!lf.value) return "Lado Fijo (LF)";
+  if (!lm.value) return "Lado Móvil (LM)";
+  if (!partePlana.value) return "Parte plana";
+  if (!caida.value) return "Hoja caída";
+
+  return null; // todo OK
+}
+
 saveBtn.addEventListener("click", () => {
+
+  const campoFaltante = validarRegistro();
+
+  if (campoFaltante) {
+    alert("Falta capturar: " + campoFaltante);
+    feedback("Falta capturar " + campoFaltante);
+    return;
+  }
+
   const registro = {
     linea: linea.value,
     estacion: estacion.value,
@@ -81,14 +104,12 @@ saveBtn.addEventListener("click", () => {
     lm: lm.value,
     partePlana: partePlana.value,
     caida: caida.value,
-    observaciones: observaciones.value
+    observaciones: observaciones.value // opcional
   };
 
   report.registros.push(registro);
-
   actualizarPreview();
   limpiarFormulario();
-
   generateBtn.disabled = false;
 });
 
