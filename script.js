@@ -226,11 +226,13 @@ if (window.dictadoActivo) {
 function limpiarFormulario() {
   // Guardamos temporalmente el No. de Parte
   const parteActual = document.getElementById("parte").value;
+  const lineaActual = document.getElementById("linea").value;
 
   inspectionForm.reset();
 
   // Restauramos el No. de Parte
   document.getElementById("parte").value = parteActual;
+  document.getElementById("linea").value = lineaActual;
 }
 
 generateBtn.addEventListener("click", async () => {
