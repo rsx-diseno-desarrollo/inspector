@@ -139,28 +139,27 @@
       <h3>Registro de Inspección</h3>
 
       <form id="inspectionForm">
-
+  No. de Parte: <input id="parte" placeholder="Manual (sin guiones)"><br>
         Línea:
-<select id="linea">
-  <option value="">Seleccionar linea</option>
-  <option value="L1">L1</option>
-  <option value="L4">L4</option>
-  <option value="L5">L5</option>
-</select><br>
+        <select id="linea">
+          <option value="">Seleccionar linea</option>
+          <option value="L1">L1</option>
+          <option value="L4">L4</option>
+          <option value="L5">L5</option>
+        </select><br>
         Estación:
-<select id="estacion">
-  <option value="">Seleccionar estación</option>
-  <option value="E1">E1</option>
-  <option value="E2">E2</option>
-  <option value="E3">E3</option>
-  <option value="E4">E4</option>
-  <option value="E5">E5</option>
-  <option value="E6">E6</option>
-  <option value="E7">E7</option>
-  <option value="E8">E8</option>
-  <option value="E9">E9</option>
-</select><br>
-        No. de Parte: <input id="parte" placeholder="Manual (sin guiones)"><br>
+        <select id="estacion">
+          <option value="">Seleccionar estación</option>
+          <option value="E1">E1</option>
+          <option value="E2">E2</option>
+          <option value="E3">E3</option>
+          <option value="E4">E4</option>
+          <option value="E5">E5</option>
+          <option value="E6">E6</option>
+          <option value="E7">E7</option>
+          <option value="E8">E8</option>
+          <option value="E9">E9</option>
+        </select><br>
         No. de Hoja: <input id="hoja"><br>
         Altura: <input type="number" id="altura" step="0.01"><br>
 
@@ -169,11 +168,11 @@
         LM: <input type="number" id="lm" step="0.01"><br>
 
         Parte plana:
-<select id="partePlana">
-  <option value="">Seleccionar</option>
-  <option value="OK">OK</option>
-  <option value="NOT_OK">NOT OK</option>
-</select><br>
+        <select id="partePlana">
+          <option value="">Seleccionar</option>
+          <option value="OK">OK</option>
+          <option value="NOT_OK">NOT OK</option>
+        </select><br>
 
         Hoja caída: <input type="number" id="caida" step="0.01"><br>
 
@@ -245,7 +244,7 @@
   </div>
 </div>
 
-  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
 <!-- Librerías PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
