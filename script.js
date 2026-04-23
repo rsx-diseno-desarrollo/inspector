@@ -1,16 +1,4 @@
 // ============================
-// Supabase Client
-// ============================
-const SUPABASE_URL = "https://kjdribojjoiigftttwwu.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_bHihm-V59U5uVz-sT8r3-g_iqlsVy_Q";
-
-// CLIENTE REAL
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
-
-// ============================
 // Estado del reporte
 // ============================
 
@@ -44,6 +32,17 @@ const searchSection = document.getElementById("search-section");
 const toggleAdvancedBtn = document.getElementById("toggleAdvanced");
 const advancedSection = document.getElementById("advanced-search");
 const backHomeBtn = document.getElementById("backHome");
+
+const linea = document.getElementById("linea");
+const estacion = document.getElementById("estacion");
+const parte = document.getElementById("parte");
+const hoja = document.getElementById("hoja");
+const altura = document.getElementById("altura");
+const lf = document.getElementById("lf");
+const lm = document.getElementById("lm");
+const partePlana = document.getElementById("partePlana");
+const caida = document.getElementById("caida");
+const observaciones = document.getElementById("observaciones");
 
 const voiceControl = document.getElementById("voiceControl");
 
@@ -114,7 +113,7 @@ saveBtn.addEventListener("click", async () => {
     return;
   }
 
-  // ✅ SOLO la primera vez se crea el reporte
+  // SOLO la primera vez se crea el reporte
   if (!activeReportId) {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, "0");
@@ -144,7 +143,7 @@ saveBtn.addEventListener("click", async () => {
     activeReportId = data.id;
   }
 
-  // ✅ Ahora sí guardas el registro
+  //  Ahora sí guardas el registro
   const registro = {
     report_id: activeReportId,
     report_hour: reportHour,
