@@ -1,3 +1,4 @@
+const supabaseDB = window.supabaseClient;
 // ============================
 // Estado del reporte
 // ============================
@@ -7,9 +8,6 @@ let report = {
   hour: "",
   registros: []
 };
-
-// ID del reporte activo en Supabase
-let activeReportId = null;
 
 // ============================
 // Referencias al DOM
@@ -33,26 +31,40 @@ const toggleAdvancedBtn = document.getElementById("toggleAdvanced");
 const advancedSection = document.getElementById("advanced-search");
 const backHomeBtn = document.getElementById("backHome");
 
-const linea = document.getElementById("linea");
-const estacion = document.getElementById("estacion");
-const parte = document.getElementById("parte");
-const hoja = document.getElementById("hoja");
-const altura = document.getElementById("altura");
-const lf = document.getElementById("lf");
-const lm = document.getElementById("lm");
-const partePlana = document.getElementById("partePlana");
-const caida = document.getElementById("caida");
-const observaciones = document.getElementById("observaciones");
-
 const voiceControl = document.getElementById("voiceControl");
 
 // ============================
 // Buscar reporte
 // ============================
 
+searchBtn.addEventListener("click", () => {
+  startSection.style.display = "none";
+  reportContent.style.display = "none";
+  searchSection.style.display = "block";
+});
+
+toggleAdvancedBtn.addEventListener("click", () => {
+  const isVisible = advancedSection.style.display === "block";
+
+  advancedSection.style.display = isVisible ? "none" : "block";
+  toggleAdvancedBtn.textContent = isVisible
+    ? "▸ Búsqueda avanzada"
+    : "▾ Búsqueda avanzada";
+});
+
+backHomeBtn.addEventListener("click", () => {
+  searchSection.style.display = "none";
+  startSection.style.display = "block";
+});
+
+// ============================
+// Iniciar reporte
+// ============================
+
 startButton.addEventListener("click", () => {
   startSection.style.display = "none";
   reportContent.style.display = "block";
+  voiceControl.classList.remove("hidden");
 });
 
 // ============================
@@ -102,74 +114,29 @@ function mostrarMensaje(texto) {
 }
 
 
-saveBtn.addEventListener("click", async () => {
+saveBtn.addEventListener("click", () => {
 
-  const inspector = document.getElementById("inspectorName").value.trim();
-  const reportHour = document.getElementById("reportHour").value;
-  const area = document.getElementById("areaSelect").value;
-
-  if (!inspector || !reportHour) {
-    alert("Ingrese el nombre del inspector y la hora antes de guardar registros.");
+  const faltantes = validarRegistro();
+  if (faltantes.length > 0) {
+    mostrarMensaje("Faltan datos: " + faltantes.join(", "));
     return;
   }
 
-  // SOLO la primera vez se crea el reporte
-  if (!activeReportId) {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, "0");
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const yyyy = today.getFullYear();
-
-    const folio = `R-${area}-${dd}${mm}${yyyy}-01`; // luego lo automatizamos
-
-    const { data, error } = await supabase
-      .from("reports")
-      .insert({
-        folio,
-        area,
-        inspector,
-        report_date: `${yyyy}-${mm}-${dd}`,
-        status: "open"
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error(error);
-      alert("Error al crear el reporte");
-      return;
-    }
-
-    activeReportId = data.id;
-  }
-
-  //  Ahora sí guardas el registro
   const registro = {
-    report_id: activeReportId,
-    report_hour: reportHour,
     linea: linea.value,
     estacion: estacion.value,
     parte: parte.value,
     hoja: hoja.value,
     altura: altura.value,
-    torc_lf: lf.value,
-    torc_lm: lm.value,
-    parte_plana: partePlana.value,
-    hoja_caida: caida.value,
-    obs: observaciones.value || null
+    lf: lf.value,
+    lm: lm.value,
+    partePlana: partePlana.value,
+    caida: caida.value,
+    observaciones: observaciones.value || ""
   };
 
-  const { error: regError } = await supabase
-    .from("inspec_records_tsts")
-    .insert(registro);
-
-  if (regError) {
-    console.error(regError);
-    alert("Error al guardar el registro");
-    return;
-  }
-
   report.registros.push(registro);
+
   actualizarPreview();
   limpiarFormulario();
   generateBtn.disabled = false;
@@ -267,21 +234,85 @@ function limpiarFormulario() {
 }
 
 generateBtn.addEventListener("click", async () => {
-  if (!activeReportId) return;
 
-  generarPDF(report);
+  const inspector = document.getElementById("inspectorName").value.trim();
+  const reportHour = document.getElementById("reportHour").value;
+  const area = document.getElementById("areaSelect").value;
 
-  const { error } = await supabase
-    .from("reports")
-    .update({ status: "closed" })
-    .eq("id", activeReportId);
-
-  if (error) {
-    console.error(error);
-    alert("Error al cerrar el reporte");
+  if (!inspector || !reportHour) {
+    alert("Ingrese el nombre del inspector y la hora del reporte.");
     return;
   }
 
+  if (report.registros.length === 0) {
+    alert("No hay registros para generar el reporte.");
+    return;
+  }
+
+  // =========================
+  // 1. CREAR REPORTE
+  // =========================
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+  const reportDate = `${yyyy}-${mm}-${dd}`;
+
+  // Por ahora consecutivo fijo
+  const folio = `R-${area}-${dd}${mm}${yyyy}-01`;
+
+  const { data: reportData, error: reportError } = await supabaseDB
+    .from("reports")
+    .insert({
+      folio,
+      area,
+      inspector,
+      report_date: reportDate,
+      status: "closed"
+    })
+    .select()
+    .single();
+
+  if (reportError) {
+    console.error(reportError);
+    alert("Error al guardar el reporte.");
+    return;
+  }
+
+  const reportId = reportData.id;
+
+  // =========================
+  // 2. CREAR REGISTROS
+  // =========================
+  const registrosParaDB = report.registros.map(r => ({
+    report_id: reportId,
+    report_hour: reportHour,
+    linea: r.linea,
+    estacion: r.estacion,
+    parte: r.parte,
+    hoja: r.hoja,
+    altura: r.altura,
+    torc_lf: r.lf,
+    torc_lm: r.lm,
+    parte_plana: r.partePlana,
+    hoja_caida: r.caida,
+    obs: r.observaciones || null
+  }));
+
+  const { error: recordsError } = await supabaseDB
+    .from("inspec_records_tsts")
+    .insert(registrosParaDB);
+
+  if (recordsError) {
+    console.error(recordsError);
+    alert("Error al guardar los registros.");
+    return;
+  }
+
+  // =========================
+  // 3. PDF + RESET
+  // =========================
+  generarPDF(report);
   resetApp();
 });
 
