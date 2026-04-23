@@ -1,4 +1,16 @@
 // ============================
+// Supabase Client
+// ============================
+const SUPABASE_URL = "https://kjdribojjoiigftttwwu.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_bHihm-V59U5uVz-sT8r3-g_iqlsVy_Q";
+
+// CLIENTE REAL
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+// ============================
 // Estado del reporte
 // ============================
 
@@ -7,6 +19,9 @@ let report = {
   hour: "",
   registros: []
 };
+
+// ID del reporte activo en Supabase
+let activeReportId = null;
 
 // ============================
 // Referencias al DOM
@@ -36,34 +51,9 @@ const voiceControl = document.getElementById("voiceControl");
 // Buscar reporte
 // ============================
 
-searchBtn.addEventListener("click", () => {
-  startSection.style.display = "none";
-  reportContent.style.display = "none";
-  searchSection.style.display = "block";
-});
-
-toggleAdvancedBtn.addEventListener("click", () => {
-  const isVisible = advancedSection.style.display === "block";
-
-  advancedSection.style.display = isVisible ? "none" : "block";
-  toggleAdvancedBtn.textContent = isVisible
-    ? "▸ Búsqueda avanzada"
-    : "▾ Búsqueda avanzada";
-});
-
-backHomeBtn.addEventListener("click", () => {
-  searchSection.style.display = "none";
-  startSection.style.display = "block";
-});
-
-// ============================
-// Iniciar reporte
-// ============================
-
 startButton.addEventListener("click", () => {
   startSection.style.display = "none";
   reportContent.style.display = "block";
-  voiceControl.classList.remove("hidden");
 });
 
 // ============================
@@ -113,47 +103,77 @@ function mostrarMensaje(texto) {
 }
 
 
-saveBtn.addEventListener("click", () => {
+saveBtn.addEventListener("click", async () => {
 
-  const faltantes = validarRegistro();
+  const inspector = document.getElementById("inspectorName").value.trim();
+  const reportHour = document.getElementById("reportHour").value;
+  const area = document.getElementById("areaSelect").value;
 
-  //
-  if (faltantes.length > 0) {
-    const mensaje =
-      faltantes.length === 1
-        ? "Falta capturar " + faltantes[0]
-        : "Faltan capturar " + faltantes.join(", ");
-
-    //
-    feedback(mensaje, "error");
-
-    // (opcional) mensaje visual no bloqueante
-    mostrarMensaje(mensaje);
-
+  if (!inspector || !reportHour) {
+    alert("Ingrese el nombre del inspector y la hora antes de guardar registros.");
     return;
   }
 
-  //
+  // ✅ SOLO la primera vez se crea el reporte
+  if (!activeReportId) {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const yyyy = today.getFullYear();
+
+    const folio = `R-${area}-${dd}${mm}${yyyy}-01`; // luego lo automatizamos
+
+    const { data, error } = await supabase
+      .from("reports")
+      .insert({
+        folio,
+        area,
+        inspector,
+        report_date: `${yyyy}-${mm}-${dd}`,
+        status: "open"
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error(error);
+      alert("Error al crear el reporte");
+      return;
+    }
+
+    activeReportId = data.id;
+  }
+
+  // ✅ Ahora sí guardas el registro
   const registro = {
+    report_id: activeReportId,
+    report_hour: reportHour,
     linea: linea.value,
     estacion: estacion.value,
     parte: parte.value,
     hoja: hoja.value,
     altura: altura.value,
-    lf: lf.value,
-    lm: lm.value,
-    partePlana: partePlana.value,
-    caida: caida.value,
-    observaciones: observaciones.value
+    torc_lf: lf.value,
+    torc_lm: lm.value,
+    parte_plana: partePlana.value,
+    hoja_caida: caida.value,
+    obs: observaciones.value || null
   };
+
+  const { error: regError } = await supabase
+    .from("inspec_records_tsts")
+    .insert(registro);
+
+  if (regError) {
+    console.error(regError);
+    alert("Error al guardar el registro");
+    return;
+  }
 
   report.registros.push(registro);
   actualizarPreview();
   limpiarFormulario();
   generateBtn.disabled = false;
-
-  //
-  feedback("Registro guardado", "confirmacion");
 });
 
 // ============================
@@ -247,21 +267,22 @@ function limpiarFormulario() {
   document.getElementById("parte").value = parteActual;
 }
 
-generateBtn.addEventListener("click", () => {
-  report.inspector = document.getElementById("inspectorName").value;
-  report.hour = document.getElementById("reportHour").value;
-
-  if (!report.inspector || !report.hour) {
-    alert("Ingrese el nombre del inspector y la hora del reporte.");
-    return;
-  }
-
-  if (report.registros.length === 0) {
-    alert("No hay registros para generar el reporte.");
-    return;
-  }
+generateBtn.addEventListener("click", async () => {
+  if (!activeReportId) return;
 
   generarPDF(report);
+
+  const { error } = await supabase
+    .from("reports")
+    .update({ status: "closed" })
+    .eq("id", activeReportId);
+
+  if (error) {
+    console.error(error);
+    alert("Error al cerrar el reporte");
+    return;
+  }
+
   resetApp();
 });
 
