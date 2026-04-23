@@ -18,10 +18,10 @@
   <div class="area-selector">
     <label for="areaSelect">Área:</label>
     <select id="areaSelect">
-      <option value="tt" selected>Tratamientos térmicos</option>
-      <option value="op" disabled>Operaciones Previas</option>
-      <option value="of" disabled>Operaciones Finales</option>
-      <option value="ecoat" disabled>E‑Coat (Pintura)</option>
+      <option value="TT" selected>Tratamientos térmicos</option>
+      <option value="OP" disabled>Operaciones Previas</option>
+      <option value="OF" disabled>Operaciones Finales</option>
+      <option value="EC" disabled>E‑Coat (Pintura)</option>
     </select>
   </div>
 </header>
@@ -243,10 +243,6 @@
     Dictado apagado
   </div>
 </div>
-  
-<!-- Librerías PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -255,7 +251,12 @@
     'https://kjdribojjoiigftttwwu.supabase.co',
     'sb_publishable_bHihm-V59U5uVz-sT8r3-g_iqlsVy_Q'
   );
-</script>
+</script>  
+<!-- Librerías PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+
 <!-- Scripts de la app -->
 <script src="pdfGen.js"></script>
 <script src="script.js"></script>
