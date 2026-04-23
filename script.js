@@ -31,6 +31,10 @@ const toggleAdvancedBtn = document.getElementById("toggleAdvanced");
 const advancedSection = document.getElementById("advanced-search");
 const backHomeBtn = document.getElementById("backHome");
 
+const executeSearchBtn = document.getElementById("executeSearch");
+const resultsSection = document.getElementById("search-results");
+const resultsTableBody = document.querySelector("#resultsTable tbody");
+
 const voiceControl = document.getElementById("voiceControl");
 
 // ============================
@@ -55,6 +59,99 @@ toggleAdvancedBtn.addEventListener("click", () => {
 backHomeBtn.addEventListener("click", () => {
   searchSection.style.display = "none";
   startSection.style.display = "block";
+});
+
+// ============================
+// Render tabla de busqueda
+// ============================
+function renderSearchResults(data) {
+  resultsTableBody.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    resultsTableBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align:center;">
+          No se encontraron reportes
+        </td>
+      </tr>
+    `;
+    resultsSection.style.display = "block";
+    return;
+  }
+
+  data.forEach(row => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${row.folio}</td>
+      <td>${row.report_date}</td>
+      <td>${row.area}</td>
+      <td>${row.inspector}</td>
+      <td>${row.lineas}</td>
+      <td>${row.partes_evaluadas}</td>
+      <td><button disabled>Editar</button></td>
+      <td><button disabled>Eliminar</button></td>
+      <td><button disabled>Ver</button></td>
+    `;
+
+    resultsTableBody.appendChild(tr);
+  });
+
+  resultsSection.style.display = "block";
+}
+
+executeSearchBtn.addEventListener("click", async () => {
+
+const folio = document.getElementById("searchFolio").value.trim();
+const date = document.getElementById("searchDate").value;
+const inspector = document.getElementById("searchInspector").value.trim();
+const linea = document.getElementById("searchLinea").value;
+const hour = document.getElementById("searchHour").value;
+
+
+if (!folio && !date && !inspector && !linea && !hour) {
+  alert("Ingrese al menos un criterio de búsqueda.");
+  return;
+}
+
+  let query = supabaseDB
+  .from("view_reports_summary")
+  .select("*")
+  .order("report_date", { ascending: false });
+
+// ===== FILTROS BASICOS =====
+if (folio) {
+  query = query.ilike("folio", `%${folio}%`);
+}
+
+if (date) {
+  query = query.eq("report_date", date);
+}
+
+// ===== FILTROS AVANZADOS =====
+if (inspector) {
+  query = query.ilike("inspector", `%${inspector}%`);
+}
+
+if (linea) {
+  // Se usa ilike porque "lineas" es un string agregador (L1, L4)
+  query = query.ilike("lineas", `%${linea}%`);
+}
+
+if (hour) {
+  // Si luego agregas horas a la view, aquí se conecta
+  query = query.ilike("horas", `%${hour}%`);
+}
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error(error);
+    alert("Error al buscar reportes.");
+    return;
+  }
+
+  renderSearchResults(data);
 });
 
 // ============================
