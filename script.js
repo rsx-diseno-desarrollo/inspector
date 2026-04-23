@@ -251,17 +251,31 @@ generateBtn.addEventListener("click", async () => {
     return;
   }
 
-  // =========================
-  // 1. CREAR REPORTE
-  // =========================
+  // Fecha
   const today = new Date();
   const dd = String(today.getDate()).padStart(2, "0");
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const yyyy = today.getFullYear();
   const reportDate = `${yyyy}-${mm}-${dd}`;
-
-  // Por ahora consecutivo fijo
-  const folio = `R-${area}-${dd}${mm}${yyyy}-01`;
+  
+  // Calcular consecutivo
+  const { data: existingReports, error: countError } = await supabaseDB
+    .from("reports")
+    .select("id")
+    .eq("area", area)
+    .eq("report_date", reportDate);
+  
+  if (countError) {
+    console.error(countError);
+    alert("Error al calcular el consecutivo del reporte.");
+    return;
+  }
+  
+  const consecutivo = existingReports.length + 1;
+  const consecutivoFormatted = String(consecutivo).padStart(2, "0");
+  
+  // Folio FINAL
+  const folio = `R-${area}-${dd}${mm}${yyyy}-${consecutivoFormatted}`;
 
   const { data: reportData, error: reportError } = await supabaseDB
     .from("reports")
