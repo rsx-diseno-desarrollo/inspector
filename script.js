@@ -9,6 +9,8 @@ let report = {
   registros: []
 };
 
+let currentViewedReport = null;
+
 // ============================
 // Referencias al DOM
 // ============================
@@ -34,6 +36,22 @@ const backHomeBtn = document.getElementById("backHome");
 const executeSearchBtn = document.getElementById("executeSearch");
 const resultsSection = document.getElementById("search-results");
 const resultsTableBody = document.querySelector("#resultsTable tbody");
+
+
+//REPORTES TSTS
+const viewReportSection = document.getElementById("view-report-section");
+const viewReportTableBody = document.querySelector("#viewReportTable tbody");
+
+const viewFolio = document.getElementById("viewFolio");
+const viewDate = document.getElementById("viewDate");
+const viewInspector = document.getElementById("viewInspector");
+const viewLineas = document.getElementById("viewLineas");
+const viewPartes = document.getElementById("viewPartes");
+
+const downloadPdfBtn = document.getElementById("downloadPdfBtn");
+const editReportBtn = document.getElementById("editReportBtn");
+const deleteReportBtn = document.getElementById("deleteReportBtn");
+const backToSearchBtn = document.getElementById("backToSearchBtn");
 
 const voiceControl = document.getElementById("voiceControl");
 
@@ -88,7 +106,9 @@ function renderSearchResults(data) {
       <td>${row.inspector}</td>
       <td>${row.lineas}</td>
       <td>${row.partes_evaluadas}</td>
-      <td><button disabled>Abrir</button></td>
+      <td>
+        <button class="view-report" id="openReport" data-folio="${row.folio}">Abrir</button>
+      </td>
     `;
 
     resultsTableBody.appendChild(tr);
@@ -96,6 +116,133 @@ function renderSearchResults(data) {
 
   resultsSection.style.display = "block";
 }
+
+resultsTableBody.addEventListener("click", async (e) => {
+  if (!e.target.classList.contains("view-report")) return;
+
+  const folio = e.target.dataset.folio;
+  await loadReportDetail(folio);
+});
+
+async function loadReportDetail(folio) {
+  // 1. Datos generales desde la view
+  const { data: summary, error: summaryError } = await supabaseDB
+    .from("view_reports_summary")
+    .select("*")
+    .eq("folio", folio)
+    .single();
+
+  if (summaryError) {
+    alert("Error al cargar el reporte.");
+    console.error(summaryError);
+    return;
+  }
+
+  // Pintar encabezado
+  viewFolio.textContent = summary.folio;
+  viewDate.textContent = summary.report_date;
+  viewInspector.textContent = summary.inspector;
+  viewLineas.textContent = summary.lineas;
+  viewPartes.textContent = summary.partes_evaluadas;
+
+  // 2. Registros detallados
+  const { data: reportRow, error: reportIdError } = await supabaseDB
+  .from("reports")
+  .select("id")
+  .eq("folio", folio)
+  .single();
+
+if (reportIdError) {
+  console.error(reportIdError);
+  alert("No se pudo obtener el reporte.");
+  return;
+}
+
+const reportId = reportRow.id;
+
+const { data: records, error: recordsError } = await supabaseDB
+  .from("inspec_records_tsts")
+  .select("*")
+  .eq("report_id", reportId)
+  .order("created_at", { ascending: true });
+
+// Tomar la hora del primer registro como hora del reporte
+const reportHour = records.length > 0 ? records[0].report_hour : "--:--";
+
+// Mostrarla en la vista
+document.getElementById("viewHour").textContent = reportHour;
+
+if (recordsError) {
+  console.error(recordsError);
+  alert("Error al cargar los registros.");
+  return;
+}
+
+  // Pintar tabla
+  viewReportTableBody.innerHTML = "";
+  records.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${r.linea}</td>
+      <td>${r.estacion}</td>
+      <td>${r.parte}</td>
+      <td>${r.hoja}</td>
+      <td>${r.altura}</td>
+      <td>${r.torc_lf}</td>
+      <td>${r.torc_lm}</td>
+      <td>${r.parte_plana}</td>
+      <td>${r.hoja_caida}</td>
+      <td>${r.obs || ""}</td>
+    `;
+    viewReportTableBody.appendChild(tr);
+  });
+
+  // Cambiar vista
+  searchSection.style.display = "none";
+  viewReportSection.style.display = "block";
+
+  currentViewedReport = {
+  inspector: summary.inspector,
+  hour: records.length > 0 ? records[0].report_hour : "",
+  registros: records.map(r => ({
+    linea: r.linea,
+    estacion: r.estacion,
+    parte: r.parte,
+    hoja: r.hoja,
+    altura: r.altura,
+    lf: r.torc_lf,
+    lm: r.torc_lm,
+    partePlana: r.parte_plana,
+    caida: r.hoja_caida,
+    observaciones: r.obs || ""
+  }))
+};
+}
+
+//DESCARGA
+downloadPdfBtn.addEventListener("click", () => {
+  if (!currentViewedReport) {
+    alert("No hay reporte cargado.");
+    return;
+  }
+
+  generarPDF(currentViewedReport);
+});
+
+//ELIMINACION
+deleteReportBtn.addEventListener("click", async () => {
+  if (!confirm("¿Seguro que deseas eliminar este reporte?")) return;
+
+  // Luego: borrar en DB por report_id
+  alert("Eliminar (pendiente de implementación)");
+});
+
+//VOLVER
+backToSearchBtn.addEventListener("click", () => {
+  viewReportSection.style.display = "none";
+  searchSection.style.display = "block";
+});
+
 
 executeSearchBtn.addEventListener("click", async () => {
 
@@ -133,11 +280,6 @@ if (inspector) {
 if (linea) {
   // Se usa ilike porque "lineas" es un string agregador (L1, L4)
   query = query.ilike("lineas", `%${linea}%`);
-}
-
-if (hour) {
-  // Si luego agregas horas a la view, aquí se conecta
-  query = query.ilike("horas", `%${hour}%`);
 }
 
   const { data, error } = await query;
