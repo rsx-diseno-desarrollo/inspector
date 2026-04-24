@@ -49,6 +49,20 @@ doc.text(
   { align: "center" }
 );
 
+// ===== FOLIO DEL REPORTE =====
+doc.setFont("helvetica", "normal");
+doc.setFontSize(10);
+doc.setTextColor(0);
+
+if (report.folio) {
+  doc.text(
+    `Folio: ${report.folio}`,
+    pageWidth / 2,
+    22,
+    { align: "center" }
+  );
+}  
+ 
 doc.setFontSize(11);
 doc.setFont("helvetica", "normal");
 doc.setTextColor(80);
@@ -66,7 +80,7 @@ doc.line(10, 26, pageWidth - 10, 26);
   // =========================
   // DATOS DEL REPORTE
   // =========================
-  doc.setFontSize(9);
+doc.setFontSize(9);
 doc.setTextColor(0);
 
 doc.text(`Inspector: ${report.inspector}`, 12, 32);
