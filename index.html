@@ -120,7 +120,6 @@
         <tr>
           <th>Folio</th>
           <th>Fecha</th>
-          <th>Área</th>
           <th>Inspector</th>
           <th>Líneas</th>
           <th>Partes</th>
@@ -133,6 +132,56 @@
   </div>
 </section>
 
+</section>
+
+<!-- =========================
+     VER REPORTE
+========================== -->
+<section id="view-report-section" style="display:none;">
+  <h1>Detalle del Reporte</h1>
+
+  <!-- Datos generales -->
+  <section class="card">
+    <p><strong>Folio:</strong> <span id="viewFolio"></span></p>
+    <p><strong>Fecha:</strong> <span id="viewDate"></span></p>
+    <p><strong>Hora:</strong> <span id="viewHour"></span></p>
+    <p><strong>Inspector:</strong> <span id="viewInspector"></span></p>
+    <p><strong>Líneas:</strong> <span id="viewLineas"></span></p>
+    <p><strong>Partes evaluadas:</strong> <span id="viewPartes"></span></p>
+  </section>
+
+  <!-- Tabla de registros -->
+  <section>
+    <h3>Registros del reporte</h3>
+
+    <div class="table-wrapper">
+      <table id="viewReportTable">
+        <thead>
+          <tr>
+            <th>Línea</th>
+            <th>Estación</th>
+            <th>No. Parte</th>
+            <th>Hoja</th>
+            <th>Altura</th>
+            <th>LF</th>
+            <th>LM</th>
+            <th>Parte plana</th>
+            <th>Hoja caída</th>
+            <th>Observaciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Acciones -->
+  <section class="home-actions">
+    <button id="downloadPdfBtn">Descargar PDF</button>
+    <button id="editReportBtn">Editar</button>
+    <button id="deleteReportBtn" class="danger">Eliminar</button>
+    <button id="backToSearchBtn" class="secondary">Volver</button>
+  </section>
 </section>
 
   <!-- =========================
