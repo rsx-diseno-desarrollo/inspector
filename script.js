@@ -85,13 +85,10 @@ function renderSearchResults(data) {
     tr.innerHTML = `
       <td>${row.folio}</td>
       <td>${row.report_date}</td>
-      <td>${row.area}</td>
       <td>${row.inspector}</td>
       <td>${row.lineas}</td>
       <td>${row.partes_evaluadas}</td>
-      <td><button disabled>Editar</button></td>
-      <td><button disabled>Eliminar</button></td>
-      <td><button disabled>Ver</button></td>
+      <td><button disabled>Abrir</button></td>
     `;
 
     resultsTableBody.appendChild(tr);
