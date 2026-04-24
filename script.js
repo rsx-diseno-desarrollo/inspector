@@ -201,7 +201,8 @@ if (recordsError) {
   searchSection.style.display = "none";
   viewReportSection.style.display = "block";
 
-  currentViewedReport = {
+currentViewedReport = {
+  folio: summary.folio,
   inspector: summary.inspector,
   hour: records.length > 0 ? records[0].report_hour : "",
   registros: records.map(r => ({
