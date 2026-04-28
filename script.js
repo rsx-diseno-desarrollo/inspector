@@ -230,14 +230,6 @@ downloadPdfBtn.addEventListener("click", () => {
   generarPDF(currentViewedReport);
 });
 
-//ELIMINACION
-deleteReportBtn.addEventListener("click", async () => {
-  if (!confirm("¿Seguro que deseas eliminar este reporte?")) return;
-
-  // Luego: borrar en DB por report_id
-  alert("Eliminar (pendiente de implementación)");
-});
-
 //VOLVER
 backToSearchBtn.addEventListener("click", () => {
   viewReportSection.style.display = "none";
